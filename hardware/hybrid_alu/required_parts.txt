@@ -4,5 +4,5 @@
 - 1x schablone_alu 
 
 Other:
-- 2x 60x20x0.3cm aluplates
+- 2x 60x20x0.3cm aluminum plates
 - 4x Part #5
