@@ -2,7 +2,7 @@
 
 ## What is this?
 
-This repository contains the building plans to build a DIY aircleaner based on UV-C radiation - the "cleanair" device.
+This repository contains the building plans to build a DIY-air-cleaner based on UV-C radiation - the "cleanair" device.
 The large device consists of 6 36W UV-C lamps in a flight cases with extra space for electronics and the ESP32 control unit. The small one can be printed using a 3d printer capable of printing 22cm x 22cm blocks and include 2 lamps.
 
 ## Getting started
