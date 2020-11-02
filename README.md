@@ -24,4 +24,4 @@ We will not build our own "MaibornWolff Air Cleaner" unit and sell it. We have n
 
 ### How can I help?
 
-Clone this repository, make the code, the device itself better and create a PR :-)
+Clone this repository, improve the code or the device itself, and create a PR :-)
