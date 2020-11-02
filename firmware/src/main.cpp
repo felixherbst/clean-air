@@ -29,8 +29,20 @@ boolean otaUrlConfigured = false;
 // Set in setup() if we fall to offline mode
 boolean offlineMode = false;
 
+// we started here
+unsigned long bootTime = millis();
 // Wifi check
-unsigned long previousCheckWifi = millis();
+unsigned long previousCheckWifi = bootTime;
+// check for updating operating hours
+unsigned long previousCheckOperatingHours = bootTime;
+
+// operating statistics
+struct statsData
+{
+  int operatingHours;
+};
+
+statsData stats;
 
 // Define custom update service.
 UpdateService updateService;
@@ -92,7 +104,7 @@ void loadParams(const char *paramFile)
       ESP_LOGI(TAG, "%s loaded", String(paramFile));
     }
     else
-      ESP_LOGI(TAG, "%s failed to load", String(paramFile));
+      ESP_LOGE(TAG, "%s failed to load", String(paramFile));
     param.close();
   } // if
   SPIFFS.end();
@@ -191,6 +203,53 @@ void setFanSpeed(int speed)
   fanController.setSpeed(speed);
 }
 
+void initStats()
+{
+  stats.operatingHours = 0;
+
+  SPIFFS.begin(true);
+  File stats_file = SPIFFS.open(STATS_FILE, FILE_READ);
+
+  size_t size = stats_file.size();
+  if (size == 0)
+  {
+    ESP_LOGI(TAG, "Stats file empty. Will create a new one...");
+  }
+  else
+  {
+    StaticJsonDocument<STATS_DOC_SIZE> stats_doc;
+    DeserializationError error = deserializeJson(stats_doc, stats_file);
+    if (error)
+    {
+      ESP_LOGI(TAG, "Failed to parse stats file. Will create a new one.");
+    }
+    else
+    {
+      stats.operatingHours = stats_doc["operatingHours"];
+    }
+  }
+  stats_file.close();
+  SPIFFS.end();
+}
+
+void updateStats()
+{
+  // Open file for reading
+  SPIFFS.begin(true);
+  File stats_file = SPIFFS.open(STATS_FILE, FILE_WRITE);
+  StaticJsonDocument<STATS_DOC_SIZE> stats_doc;
+
+  stats_doc["operatingHours"] = stats.operatingHours;
+
+  if (serializeJson(stats_doc, stats_file) == 0)
+  {
+    ESP_LOGE(TAG, "Failed to write stats file");
+  }
+
+  stats_file.close();
+  SPIFFS.end();
+}
+
 // Setup: Called once at bootup
 void setup()
 {
@@ -205,6 +264,8 @@ void setup()
   fanController.configure();
 
   configureNetwork();
+
+  initStats();
 
   ESP_LOGI(TAG, "Setup complete %s", TAG);
   ESP_LOGD(TAG, "offlineMode: %d", offlineMode);
@@ -225,6 +286,14 @@ void loop()
       updateService.checkAndUpdateSoftware();
     }
     previousCheckWifi = millis();
+  }
+
+  if (millis() - previousCheckOperatingHours > UPDATE_OPERATING_HOURS_INTERVAL)
+  {
+    previousCheckOperatingHours = millis();
+    stats.operatingHours++;
+    ESP_LOGV(TAG, "Uptime: %d ms, total operating time: %d h.", millis() - bootTime, stats.operatingHours);
+    updateStats();
   }
 
   // Handle clients
