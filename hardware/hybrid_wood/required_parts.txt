@@ -5,6 +5,6 @@
 - 1x schablone_wood_wide
 
 Other:
-- 2x 60x21x0.5cm woodplates
+- 2x 60x21x0.5cm wooden plates
 - 2x 60x22x0.5cm wooden plates
 - 4x Part #5
