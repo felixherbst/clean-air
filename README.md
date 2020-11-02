@@ -20,7 +20,7 @@ This device uses UV-C lamps which will damage skin and eyes. BE CAREFUL AND DO N
 ### Why is it free?
 
 We at MaibornWolff believe we have a responsibility in these difficult times to society. As an IT company we had a good business year, regardless of Corona, and now it is time to use our knowledge in creating IT solutions to build an affordable and free air cleaner everyone can use.
-We will not build our own "MaibornWolff Air Cleaner" unit and sell it. We have no whatsoever financial interest - instead we encourage you to help us make the device better, more easy to use, more cheaper to produce so everyone - companies, schools, kindergardens - could probably have one.
+We will not build our own "MaibornWolff Air Cleaner" unit and sell it. We have no whatsoever financial interest. Instead, we encourage you to help us make the device better, more easy to use, more cheap to produce, so everyone - companies, schools, kindergardens - could probably have one.
 
 ### How can I help?
 
